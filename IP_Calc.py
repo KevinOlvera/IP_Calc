@@ -1,5 +1,6 @@
 __author__ = 'Kevin Olvera'
 import sys
+import re
 
 def _dec_to_binary(ip_address):
     return map(lambda x: bin(x)[2:].zfill(8), ip_address)
@@ -27,8 +28,21 @@ class IPCalculator(object):
         self.broadcast = None
 
     def __repr__(self):
-        print "Calculando el rango IP de %s/%s" % (".".join(map(str, self._address)), self._cidr)
-        print "=================================="
+        print "\nCalculando el rango IP de %s/%s" % (".".join(map(str, self._address)), self._cidr)
+        print "=============================================="
+        ip = (".".join(map(str, self._address)))
+        ip_check = ip.split('.')
+        if int(ip_check[0]) < 128: 
+            clase = 'A'
+        elif int(ip_check[0]) < 192: 
+            clase = 'B'
+        elif int(ip_check[0]) < 224: 
+            clase = 'C'
+        elif int(ip_check[0]) < 240: 
+            clase = 'D'
+        elif int(ip_check[0]) < 256:
+            clase = 'E'       
+        print "Clase: " + clase
         print "Netmask %s" % (".".join(map(str, self.net_mask())))
         print "Network ID %s" % (".".join(map(str, self.network_ip())))
         print "Subnet Broadcast address %s" % (".".join(map(str, self.broadcast_ip())))
